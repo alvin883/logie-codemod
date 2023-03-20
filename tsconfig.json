@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "paths": {
-      "@components": ["./src/components/index.ts"]
-    }
+      "@components": ["./src/components/index.ts"],
+      "@types": ["./src/types/index.ts"],
+      "@utils": ["./src/utils/index.ts"]
+    },
+    "lib": ["dom", "dom.iterable", "es6", "ESNext"]
   }
 }
