@@ -3,10 +3,14 @@ lockfileVersion: 5.4
 specifiers:
   jscodeshift: ^0.14.0
   prettier: ^2.8.4
+  ripgrep-js: ^3.0.0
+  typescript: ^5.0.2
 
 dependencies:
   jscodeshift: 0.14.0
   prettier: 2.8.4
+  ripgrep-js: 3.0.0
+  typescript: 5.0.2
 
 packages:
 
@@ -917,6 +921,14 @@ packages:
       glob: 7.2.3
     dev: false
 
+  /ripgrep-js/3.0.0:
+    resolution: {integrity: sha512-0YPtOmzVNdjCT6dm8RrNwZFr1SJFaQfr33R40cL8oo0bcdoewjz7ou9/CME03XkzdO2aQhAR/7PMpP7oxlJuHg==}
+    dependencies:
+      debug: 4.3.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /semver/5.7.1:
     resolution: {integrity: sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==}
     hasBin: true
@@ -985,6 +997,12 @@ packages:
 
   /tslib/2.5.0:
     resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}
+    dev: false
+
+  /typescript/5.0.2:
+    resolution: {integrity: sha512-wVORMBGO/FAs/++blGNeAVdbNKtIh1rbBL2EyQ1+J9lClJ93KiiKe8PmFIVdXhHcyv44SL9oglmfeSsndo0jRw==}
+    engines: {node: '>=12.20'}
+    hasBin: true
     dev: false
 
   /update-browserslist-db/1.0.10_browserslist@4.21.5:

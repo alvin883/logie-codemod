@@ -1,3 +1,3 @@
-import { something } from "@components";
+import { Something } from "@components";
 
-something();
+Something();
