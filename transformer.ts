@@ -1,7 +1,9 @@
 import { API, FileInfo } from "jscodeshift";
+import { ripgrep } from "./ripgrep";
 
-// const ALIASES = ["@components", "@utils", "@types"];
-const ALIASES = [
+const test = false;
+const ALIASES_TEST = ["@components", "@utils", "@types"];
+const ALIASES_REAL = [
   "@Styles",
   "@API",
   "@GQL",
@@ -15,8 +17,11 @@ const ALIASES = [
   "@Assets",
 ];
 
-export default function transformer(file: FileInfo, api: API) {
+const ALIASES = test ? ALIASES_TEST : ALIASES_REAL;
+
+export default function transformer(file: FileInfo, api: API, options) {
   const j = api.jscodeshift;
+  const filePath = file.path;
 
   return j(file.source)
     .find(
@@ -27,9 +32,14 @@ export default function transformer(file: FileInfo, api: API) {
     )
     .forEach((path) => {
       const alias = path.get("source").value.value;
-      console.log(alias);
+      console.log("------");
       path.value.specifiers.forEach((path) => {
-        console.log(path.local.name);
+        const result = ripgrep(path.local.name);
+        console.log(
+          `${filePath} -> ${alias} -> ${path.local.name} -> ${
+            result?.[0] ?? "NONE"
+          }`,
+        );
       });
     })
     .toSource();
