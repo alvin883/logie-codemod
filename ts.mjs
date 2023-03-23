@@ -2,7 +2,7 @@ import ts from "typescript";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 
-const filePath = "./src/index.ts";
+const filePath = "./src/components/index.ts";
 const fileContent = readFileSync(filePath).toString();
 const fileInfo = ts.preProcessFile(fileContent);
 
@@ -23,7 +23,7 @@ fileInfo.importedFiles
       ts.sys,
     );
     const importLocation = resolvedImport.resolvedModule.resolvedFileName;
-    console.log(rawImport);
+    console.log(rawImport, importLocation);
   });
 
 // const node = ts.createSourceFile(

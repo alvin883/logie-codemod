@@ -1,3 +1,3 @@
-function formatDate() {
+export function formatDate() {
   console.log("formatDate");
 }

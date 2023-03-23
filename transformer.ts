@@ -1,6 +1,19 @@
 import { API, FileInfo } from "jscodeshift";
 
-const aliases = ["@components", "@utils", "@types"];
+// const ALIASES = ["@components", "@utils", "@types"];
+const ALIASES = [
+  "@Styles",
+  "@API",
+  "@GQL",
+  "@Constants",
+  "@Functions",
+  "@Pages",
+  "@Types",
+  "@Analytics",
+  "@Components",
+  "@Redux",
+  "@Assets",
+];
 
 export default function transformer(file: FileInfo, api: API) {
   const j = api.jscodeshift;
@@ -10,7 +23,7 @@ export default function transformer(file: FileInfo, api: API) {
       j.ImportDeclaration,
       (node) =>
         typeof node.source.value === "string" &&
-        aliases.includes(node.source.value),
+        ALIASES.includes(node.source.value),
     )
     .forEach((path) => {
       const alias = path.get("source").value.value;
