@@ -1,6 +1,6 @@
-import { Something, SiblingFn } from "@components";
+import { Something as Another, SiblingFn } from "@components";
 import { formatDate } from "@utils";
 
-Something();
+Another();
 SiblingFn();
 formatDate();

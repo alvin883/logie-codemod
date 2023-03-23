@@ -6,15 +6,14 @@ export const ripgrep = (importIdentifier: string) => {
     // prevent ripgrep to try to detect stdin that causing it to hang
     // see: https://github.com/BurntSushi/ripgrep/issues/2056#issuecomment-1005375918
     const result = execSync(
-      `rg --files-with-matches --no-messages --smart-case "export (const|async function|function|type|interface|enum) ${importIdentifier}(\s|\(|<|:))" --color never src/`,
+      `rg --files-with-matches --no-messages --smart-case "export (const|class|async function|function|type|interface|enum) ${importIdentifier}(\\s|\\(|<|:)" --color never src/`,
     ).toString();
     const paths = result.split("\n").filter((line) => line.length > 0);
     const sortedByShorterPath = paths.sort(
       (a, b) => a.split("/").length - b.split("/").length,
     );
+
     return sortedByShorterPath;
     // sortedByShorterPath.forEach((line) => console.log(`nah: ${line}`));
-  } catch (e) {
-    // console.log(e.message);
-  }
+  } catch (e) {}
 };

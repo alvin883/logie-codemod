@@ -1,4 +1,4 @@
-import { API, FileInfo } from "jscodeshift";
+import { API, FileInfo, ImportSpecifier } from "jscodeshift";
 import { ripgrep } from "./ripgrep";
 
 const test = false;
@@ -19,7 +19,7 @@ const ALIASES_REAL = [
 
 const ALIASES = test ? ALIASES_TEST : ALIASES_REAL;
 
-export default function transformer(file: FileInfo, api: API, options) {
+export default function transformer(file: FileInfo, api: API) {
   const j = api.jscodeshift;
   const filePath = file.path;
 
@@ -32,11 +32,19 @@ export default function transformer(file: FileInfo, api: API, options) {
     )
     .forEach((path) => {
       const alias = path.get("source").value.value;
-      console.log("------");
-      path.value.specifiers.forEach((path) => {
-        const result = ripgrep(path.local.name);
+
+      if (!path.value.specifiers.length || path.value.specifiers.length === 0)
+        console.log(`${filePath} - ERROR`);
+
+      path.value.specifiers.forEach((_path) => {
+        const path = _path as ImportSpecifier;
+        const result = ripgrep(path.imported.name);
+        const isLocalized = path.local.name !== path.imported.name;
+        const importName = isLocalized
+          ? `${path.imported.name}(${path.local.name})`
+          : path.local.name;
         console.log(
-          `${filePath} -> ${alias} -> ${path.local.name} -> ${
+          `${filePath} -> ${alias} -> ${importName} -> ${
             result?.[0] ?? "NONE"
           }`,
         );
