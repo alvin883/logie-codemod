@@ -1,7 +1,7 @@
 import { API, FileInfo, ImportSpecifier } from "jscodeshift";
 import { ripgrep } from "./ripgrep";
 
-const test = false;
+const test = true;
 const ALIASES_TEST = ["@components", "@utils", "@types"];
 const ALIASES_REAL = [
   "@Styles",
@@ -36,19 +36,46 @@ export default function transformer(file: FileInfo, api: API) {
       if (!path.value.specifiers.length || path.value.specifiers.length === 0)
         console.log(`${filePath} - ERROR`);
 
-      path.value.specifiers.forEach((_path) => {
-        const path = _path as ImportSpecifier;
-        const result = ripgrep(path.imported.name);
-        const isLocalized = path.local.name !== path.imported.name;
+      const modules = path.value.specifiers.filter(
+        (n) => n.type === "ImportSpecifier",
+      ) as ImportSpecifier[];
+
+      modules.forEach((m) => {
+        const searchResults = ripgrep(m.imported.name);
+
+        // With our codebase's codestyle, the resolved file path / the original code
+        // will highly likely be the one with lesser path depth
+        const resolvedFilePath = searchResults?.[0];
+
+        const isLocalized = m.local.name !== m.imported.name;
         const importName = isLocalized
-          ? `${path.imported.name}(${path.local.name})`
-          : path.local.name;
+          ? `${m.imported.name}(${m.local.name})`
+          : m.local.name;
+
         console.log(
           `${filePath} -> ${alias} -> ${importName} -> ${
-            result?.[0] ?? "NONE"
+            resolvedFilePath ?? "NONE"
           }`,
         );
+
+        j(path).insertAfter(
+          j.importDeclaration(
+            [
+              j.importSpecifier(
+                j.identifier(m.imported.name),
+                j.identifier(m.local.name),
+              ),
+            ],
+            j.literal(resolvedFilePath),
+          ),
+        );
       });
+
+      path.value.specifiers = path.value.specifiers.filter(
+        (n) => n.type !== "ImportSpecifier",
+      );
+
+      if (path.value.specifiers.length === 0) j(path).remove();
     })
     .toSource();
 }
