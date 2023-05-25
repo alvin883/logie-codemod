@@ -32,7 +32,12 @@ cd ../logie-fe
 ```
 2. Run `jscodeshift`
 ```bash
-$ jscodeshift --extensions=ts,tsx -t ../logie-codemod/transformer.ts --parser tsx src --dry
+$ jscodeshift --extensions=ts,tsx -t ../logie-codemod/transformer.ts --parser tsx src
+```
+
+To save log output into a file
+```bash
+$ jscodeshift --extensions=ts,tsx -t ../logie-codemod/transformer.ts --parser tsx src >> logs.txt
 ```
 
 ### Note
